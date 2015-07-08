@@ -22,7 +22,7 @@ function SqlChart(options, flotopt) {
     log(plotId);
 
     function lunchLayout(){
-        closeSection = $("<div class='close'>X</div>").hide();
+        closeSection = $("<div class='glyphicon glyphicon-remove close chart-close'></div>").hide();
         container = $("<div class='demo-container'></div>")
             .append($("<div class='demo-placeholder'></div>").attr({id: plotId}))
             .append(closeSection);
