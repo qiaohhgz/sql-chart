@@ -21,7 +21,7 @@ function SqlChart(options, flotopt) {
     }
     log(plotId);
 
-    function lunchLayout(){
+    function lunchLayout() {
         closeSection = $("<div class='glyphicon glyphicon-remove close chart-close'></div>").hide();
         container = $("<div class='demo-container'></div>")
             .append($("<div class='demo-placeholder'></div>").attr({id: plotId}))
@@ -136,7 +136,13 @@ function SqlChart(options, flotopt) {
                 timer = setTimeout(ajaxData, updateInterval);
             }
         }).error(function (e) {
-            log("API连接失败");
+            log(e);
+            if (e.responseJSON && e.responseJSON.message) {
+                destroy();
+                alert(e.responseJSON.message);
+            } else {
+                log("API连接失败");
+            }
         });
     }
 

@@ -18,8 +18,10 @@
         <button type="button" class="btn btn-success navbar-btn" data-toggle="modal" data-target="#myModal">新建</button>
         <button class="btn btn-danger navbar-btn" id="clear">删除所有</button>
 
-        <input id="debug-toggle" type="checkbox" data-onstyle="success" data-on="显示日志" data-off="不显示日志" data-toggle="toggle">
-        <input id="point-toggle" type="checkbox" data-onstyle="success" data-on="显示圆点" data-off="不显示圆点" data-toggle="toggle">
+        <input id="debug-toggle" type="checkbox" data-onstyle="success" data-on="显示日志" data-off="不显示日志"
+               data-toggle="toggle">
+        <input id="point-toggle" type="checkbox" data-onstyle="success" data-on="显示圆点" data-off="不显示圆点"
+               data-toggle="toggle">
 
         服务器: <input id="updateAPI" type="text" style="width: 15em;">
         最大点数: <input id="updatePoints" type="text" style="text-align: right; width:5em"> 个
@@ -111,14 +113,14 @@
         }
     });
 
-    var showPoint = loadValue("showPoint", false);
+    var showPoint = eval(loadValue("showPoint", false));
     $("#point-toggle").prop('checked', eval(showPoint)).change().change(function () {
         showPoint = $(this).prop('checked');
         ls("showPoint", showPoint);
     });
 
-    var isDebug = loadValue("isDebug", false);
-    $("#debug-toggle").prop('checked', eval(isDebug)).change().change(function () {
+    var isDebug = eval(loadValue("isDebug", false));
+    $("#debug-toggle").prop('checked', isDebug).change().change(function () {
         isDebug = $(this).prop('checked');
         ls("isDebug", isDebug);
         if (isDebug) {
@@ -127,6 +129,11 @@
             $("#log").hide();
         }
     });
+    if (isDebug) {
+        $("#log").show();
+    } else {
+        $("#log").hide();
+    }
 
     $(function () {
         var baseUrl = $("#updateAPI").val();
@@ -175,7 +182,12 @@
                     charts.push(chart);
                 });
             }).error(function (e) {
-                alert("获取列表失败,请启动服务");
+                log(e);
+                if (e.responseJSON && e.responseJSON.message) {
+                    alert(e.responseJSON.message);
+                } else {
+                    alert("获取列表失败,请启动服务");
+                }
             });
         });
     });
