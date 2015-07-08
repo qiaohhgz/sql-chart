@@ -39,6 +39,9 @@
                 <h4 class="modal-title" id="myModalLabel">新建图表 - SQL</h4>
             </div>
             <div class="modal-body">
+                格式要求: 至少包含 <label class="text-danger">name</label> 和 <label class="text-danger">num</label> 两列
+                <pre>       select '线条名称-1' name,count(*) num from TABLE_NAME
+ union select '线条名称-2' name,count(*) num from TABLE_NAME</pre>
                 <textarea id="sql" rows="10" style="width: 100%"></textarea>
             </div>
             <div class="modal-footer">
@@ -77,7 +80,7 @@
         return ls(key) != undefined ? ls(key) : val;
     }
 
-    var totalPoints = loadValue("totalPoints", 10);
+    var totalPoints = loadValue("totalPoints", 100);
     $("#updatePoints").val(totalPoints).change(function () {
         var v = $(this).val();
         if (v && !isNaN(+v)) {
@@ -90,7 +93,7 @@
         }
     });
 
-    var updateInterval = loadValue("updateInterval", 1 * 1000);
+    var updateInterval = loadValue("updateInterval", 1000);
     $("#updateInterval").val(updateInterval).change(function () {
         var v = $(this).val();
         if (v && !isNaN(+v)) {
@@ -103,7 +106,7 @@
         }
     });
 
-    var apiUrl = loadValue("updateAPI", "http://localhost:8080/");
+    var apiUrl = loadValue("updateAPI", "http://192.168.31.241:5080/");
     $("#updateAPI").val(apiUrl).change(function () {
         var v = $(this).val();
         if (v) {
