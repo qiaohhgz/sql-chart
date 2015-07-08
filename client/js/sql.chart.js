@@ -28,6 +28,18 @@ function SqlChart(options, flotopt) {
             .append(closeSection);
 
         $(opt.section).append(container);
+
+        if ($("#tooltip").attr("id") == undefined) {
+            $("<div id='tooltip'></div>").css({
+                position: "absolute",
+                display: "none",
+                border: "1px solid #fdd",
+                padding: "2px",
+                "background-color": "#fee",
+                opacity: 0.80
+            }).appendTo("body");
+        }
+
         bindEvent();
     }
 
@@ -49,8 +61,7 @@ function SqlChart(options, flotopt) {
             xaxis: {
                 mode: "time",
                 tickFormatter: function (val, axis) {
-                    var d = new Date(val);
-                    return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                    return dateToString(val);
                 }
             },
             yaxis: {
@@ -74,9 +85,34 @@ function SqlChart(options, flotopt) {
                 }
             }
         };
+
+        //  bind tooltip
+        $("#" + plotId).bind("plothover", function (event, pos, item) {
+            if (item) {
+                var x = item.datapoint[0].toFixed(2),
+                    y = item.datapoint[1].toFixed(2);
+
+                var date = dateToString(x);
+                y = parseInt(y);
+                log("x = " + x + " y = " + y + " date = " + date);
+                $("#tooltip").html(item.series.label + " of " + date + " = " + y)
+                    .css({top: item.pageY + 5, left: item.pageX + 5})
+                    .fadeIn(200);
+            } else {
+                $("#tooltip").hide();
+            }
+        });
+
+        $("#" + plotId).bind("plotclick", function (event, pos, item) {
+            if (item) {
+                plot.highlight(item.series, item.datapoint);
+            }
+        });
+
         options = $.extend(options, flotopt);
         log(options);
-        return $.plot("#" + plotId, getData(list), options);
+        var flot = $.plot("#" + plotId, getData(list), options);
+        return flot;
     }
 
     function putNum(data, number) {

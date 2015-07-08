@@ -8,3 +8,7 @@ function log(v) {
     }
     $("#log").append("<p>" + v + "</p>");
 }
+function dateToString(val){
+    var d = new Date(parseInt(val));
+    return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+}
