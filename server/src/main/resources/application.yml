@@ -1,0 +1,8 @@
+server:
+     port: 5080
+chart:
+     sqls:
+        - select '名称-1' name,count(*) num
+          from test
+        - select '名称-2' name,count(*) num
+          from test
